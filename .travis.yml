@@ -1,22 +1,22 @@
 sudo: false
 language: clojure
 lein: lein2
-script: lein2 do test, build-site
+script: lein2 build-site
 branches:
   only:
-    - master
+  - master
+after_script:
+- cd build
+- git config --global user.email "james@yobriefca.se"
+- git config --global user.name "travis-ci"
+- git init
+- git config credential.helper "store --file=.git/credentials"
+- echo "https://${DEPLOY_TOKEN}:@github.com" > .git/credentials
+- git checkout -b gh-pages
+- git remote add origin https://github.com/kouphax/fatdash.git
+- git add -A
+- git commit -m "Automated push from travis"
+- git push --force origin gh-pages
 env:
   global:
-    secure: GHO+y9Tl4sI0nzlT0aY2QG8rC+gyJc2nslW4DCvwuC9cH5ykJRwZ0Uzn3+76I/DXfc7e4WN82cgpIFz50dAgpw3LFk5++ulAzp4cYOnLgGwkSJn+8aZobWtXj98VTBkE49rcnuEORr6x6YmWv92CMQO8NMVgOo3j+EHnOEt9fBU=
-after_script:
-  - cd build
-  - git config --global user.email "james@yobriefca.se"
-  - git config --global user.name "travis-ci"
-  - git init
-  - git config credential.helper "store --file=.git/credentials"
-  - echo "https://${DEPLOY_TOKEN}:@github.com" > .git/credentials
-  - git checkout -b gh-pages
-  - git remote add origin https://github.com/kouphax/fatdash.git
-  - git add -A
-  - git commit -m "Automated push from travis"
-  - git push --force origin gh-pages
+    secure: v2vPqKyZ91TmMR+B7Zxdv+6axpmOD9NDR2wudGbdjAT+OwIxyQU0xmuVemvo3cSr2+zdFxqAMI/WkNCD+/Q567/0x1pJel/XxNa7KAWjXeMV90YyrJRmdExXVa4I1TKhe9iwykPSLYrZzpajqdnBidMCImdRwGEblzPvew/wCGPiyNIhCcLIPj3uPiti5g4agKhLATjYJjXpn2qwz3O6SpUIk/UW85+Vom6evMIHtDzZSasrwfcQf6jn9lFEzM/qqantaixOz2Q3T+/byHeiorqehyLxYJklA9AeeL5bG9JwZhRgD56DoYdU/Ma72hYidXzqmhb+jf+BGmW0uC6asgw+7VY4nC2gP/gKdmbBDISlLSpYRKjaFjsHZehn7la0d8IanajQhB3YYKPD04t1JwxV5zpMHpGY7GqlB6+/96+fy3x3hD964QLiZSbpJlWT0nH0GN/llFc3evZzLCZF3glMWLY8oP/sln/lDAzwHSXbo2/dA6ZPXQJl4cB4hE05Vp88WzV2fepeke14YhOMBd2Roe69xtFFaFQvURkjenP05ynC704NqyGsGs61neY0TgprZnm1tm8+dx6Vu/de9MP2BFWzc1NY9pZT7kry7KWQtJhgxzVUmRtFOPlZQRaGOEJIhDPYzu7jpQDOD0oUfpEO8uCCBwMFWvrOKV+Yg4c=
