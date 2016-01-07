@@ -1,6 +1,6 @@
 (ns fatdash.core
   (:require  [stasis.core :as stasis]
-             [clojure.java.shell :only  [sh]]))
+             [clojure.java.shell :refer [sh]]))
 
 (def file-date-format (java.text.SimpleDateFormat. "yyyyMMddhhmm"))
 
