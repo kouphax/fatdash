@@ -1,5 +1,6 @@
 (ns fatdash.core
-  (:require  [stasis.core :as stasis]))
+  (:require  [stasis.core :as stasis]
+             [clojure.java.shell :only  [sh]]))
 
 (def file-date-format (java.text.SimpleDateFormat. "yyyyMMddhhmm"))
 
@@ -7,7 +8,11 @@
   (let [date (.format  file-date-format  (java.util.Date.))
         file (str date ".fd")
         path (str "./resources/log/" file)]
-    (spit path text)))
+    (spit path text)
+    (sh "git" "add" path)
+    (sh "git" "commit" "-m" (str "New entry: " file))
+    (sh "git" "pull" "--rebase" "origin" "master")
+    (sh "git" "push")))
 
 (defn- read-entries []
   (let [file-map (stasis/slurp-directory "./resources/log" #"\.fd$")]
