@@ -8,10 +8,14 @@
   (let [date (.format  file-date-format  (java.util.Date.))
         file (str date ".fd")
         path (str "./resources/log/" file)]
+    (println "Generating file " path)
     (spit path text)
+    (println "Commiting " file)
     (sh "git" "add" path)
     (sh "git" "commit" "-m" (str "New entry: " file))
+    (println "Rebasing remote repo")
     (sh "git" "pull" "--rebase" "origin" "master")
+    (println "Pushing to remote repo")
     (sh "git" "push")))
 
 (defn- read-entries []
